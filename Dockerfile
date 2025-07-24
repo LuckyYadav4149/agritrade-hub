@@ -1,15 +1,14 @@
-# Use Java 17 image
-FROM eclipse-temurin:17-jdk
-
-# Set working directory
+# -------- Build Stage --------
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copy JAR into Docker container
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-
-# Set port (Fly.io will map this)
-EXPOSE 8181
+# -------- Run Stage --------
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 
 # Run the app
+EXPOSE 8181
 ENTRYPOINT ["java", "-jar", "app.jar"]
