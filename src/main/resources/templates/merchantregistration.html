@@ -1,0 +1,163 @@
+<html th:replace="~{base::layout(~{::main})}">
+<head></head>
+<body>
+	<main class="main">
+
+		<!-- Page Title -->
+		<div class="page-title dark-background pt-5 mt-5" data-aos="fade" style="background-image: url(img/page-title-bg.webp);">
+			<div class="container position-relative mt-5">
+				 <h1>Merchant Registration Form</h1>
+				<!--<p>Home / Contact</p> -->
+				<nav class="breadcrumbs">
+					<ol>
+						<li><a href="/" class="fw-bold">Home</a></li>
+						<li class="current">Registration</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
+		<!-- End Page Title -->
+
+		<!-- Registration Form -->
+		<section id="contact" class="contact section pt-5">
+			<div class="row">
+				<div class="col-lg-7 info mx-auto h-100">
+						<form method="post" th:action="@{/mregistration}" th:object="${dto}" class="registration-form">
+							<div class="my-3">
+								<div class="loading"></div>
+								<div class="error-msg text-center" th:if="${errormsg}" th:text="${errormsg}">Hello</div>
+								<div class="sent-msg" th:if="${successmsg}" th:text="${successmsg}">Hii</div>
+							</div>
+							
+							
+							<div class="row">
+								<div class="col-md-6 form-group mt-3">
+									<label class="pb-1">Enter Your Name</label>
+									<input type="text" th:field="${dto.name}" class="form-control" id="name" placeholder="Your Name" required>
+								</div>
+								<div class="col-md-6 form-group mt-3">
+									<label class="pb-1">Enter Your Email</label>
+									<input type="email" th:field="${dto.email}" class="form-control" id="email" placeholder="Your Userid(email)" required>
+								</div>
+								<div class="col-md-6 form-group mt-3">
+									<label class="pb-1">Enter Your Password</label>
+									<input type="password" th:field="${dto.password}" maxlength="8" minlength="3" class="form-control" id="password" placeholder="Your Password" required>
+								</div>
+								
+								<div class="col-md-6 form-group mt-3">
+									<label class="pb-1">Enter Your ContactNo</label>
+									<input type="text" pattern="[6-9]\d{9}" minlength="10" maxlength="10" th:field="*{contactno}" class="form-control rounded-0" id="contactno" placeholder="Your Contact No." required>
+										
+								</div>
+								
+								<div class="col-md-6 form-group mt-3">
+									<label class="pb-1">Enter Your Aadhar No</label>
+									<input type="text" pattern="\d{12}" minlength="12" maxlength="12" th:field="${dto.aadharno}" class="form-control rounded-0" id="" placeholder="Your Aadhar No." required>
+								</div>
+								
+								<div class="col-md-6 form-group mt-3">
+									<label class="pb-1">Enter Your Pan Card No</label>
+									<input type="text" pattern="[A-Z]{5}[0-9]{4}[A-Z]" maxlength="10" minlength="10" th:field="${dto.pancardno}" style="text-transform: uppercase;" class="form-control rounded-0" id="" placeholder="Your Pancard No." required>
+								</div>
+										
+								<div class="col-md-12 form-group mt-3">
+									<label class="pb-1">Enter Your Permanent Address</label>
+									<input type="text" th:field="${dto.address}" class="form-control" id="address" placeholder="Your Address" required>
+								</div>
+									
+								<div class="col-md-12">
+                                	 <!-- CAPTCHA -->
+          							<div style="margin: 15px 0;">
+  										<label for="captcha_input_owner" style="font-weight: 500;">Enter the CAPTCHA below:</label>
+  											<div class="row">
+  												<div class="col-md-4 d-flex " >
+  													<!-- CAPTCHA Display -->
+    												<input type="text" id="captcha_display_owner" readonly>
+    
+    												<!-- Refresh Button -->
+    												<button type="button" class="btn btn-success d-flex refresh-btn mx-2 h-75 mt-2" onclick="generateCaptcha('owner')">
+      													<span>↻</span>
+    												</button>    
+  												</div>
+  												
+  												<div class="col-md-8">
+  													<p id="captchaMsg" class="py-2 px-3 m-0 bg-warning text-dark w-75" style="display: none; margin-top: 8px;">
+        												<!-- Message appears here -->
+      												</p>
+  												</div>
+    											
+  											</div>
+
+  											<!-- User Input -->
+  											<input class="form-control mt-2" type="text" id="captcha_input_owner" placeholder="Enter CAPTCHA" required >
+									</div>
+								</div>
+								
+							</div>
+							
+							<div class="text-center pt-4">
+								<button type="submit">Register</button>
+							</div>
+						</form>
+					</div>
+					<!-- End Contact Form -->		
+			</div>
+			
+		</section>
+		<!-- /Registration Section -->
+		
+			<style>
+			#captcha_display_owner{
+  	font-weight: bold; 
+  	border: none; 
+  	background-color: #eee;
+    padding: 10px; 
+    letter-spacing: 3px; 
+    width: 140px; 
+    font-size:22px; 
+    text-align: center;
+    font-family: 'Courier New', monospace; 
+    color: #333;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, #ccc 2px, #ccc 3px);
+    text-shadow: 1px 1px #aaa, -1px -1px #ddd; 
+    filter: blur(0.5px); 
+    border:0; 
+    outline:0;
+  }
+			
+		</style>		
+		<script type="text/javascript">
+  let captcha = '';
+
+  function generateCaptcha(role) {
+    captcha = ''; // Reset captcha each time
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    for (let i = 0; i < 6; i++) {
+      captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    document.getElementById(`captcha_display_${role}`).value = captcha;
+  }
+
+  function validateCaptcha() {
+    const userInput = document.getElementById("captcha_input_owner").value;
+    if (userInput !== captcha) {
+      document.getElementById("captchaMsg").style.display = 'block';
+      document.getElementById("captchaMsg").innerHTML = "Invalid Captcha. Please Try Again";
+      generateCaptcha("owner");
+      return false;
+    }
+    document.getElementById("captchaMsg").style.display = 'none';
+    return true;
+  }
+
+  // Ensure it runs AFTER DOM is loaded
+  window.onload = function () {
+    generateCaptcha("owner");
+    document.getElementById("captchaMsg").style.display = 'none';
+  };
+</script>
+		
+	</main>
+
+</body>
+</html>

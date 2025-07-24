@@ -1,0 +1,132 @@
+<html th:replace="~{Former/formerbase::layout(~{::section})}">
+<head></head>
+
+<body>
+	<section>
+		<div class="row" style="margin-top: -30px;">
+			<div class="container">
+				<div class="row">
+					<div class="card w-100">
+						<div class="card-header">
+							<div class="row">
+								<div class="col-md-7">
+									<div class="card-title">Orders Recieved</div>
+								</div>
+								
+							 	<div class="col-md-5 d-flex align-items-center text-right">
+									<label class="w-50 px-3">Filter by Status</label>
+									<select class="form-control w-50" id="statusFilter">
+										<option value="">All Orders</option>
+										<option value="Confirmed">Confirmed</option>
+										<option value="Delivered">Delivered</option>
+										<option value="Cancelled">Cancelled</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="card-body">
+							<!-- Orders Table -->
+							<div class="table-responsive">
+								<table class="table table-bordered table-hover text-center" id="example">
+									<thead class="table-success">
+										<tr>
+											<th>Sr. No</th>
+											<th>Merchant</th>
+											<th>Product</th>
+											<th>Qty</th>
+											<th>Price/Unit</th>
+											<th>Total Payment</th>
+											<th>Status</th>
+											<th>Order Date</th>
+											<th>Delivery Date</th>
+											<th>Pay Slip</th>
+											<th>Update Status</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="order, srno : ${orders}" class=""
+											th:data-status="${order.orderStatus}"
+											th:classappend="${(order.orderStatus == 'Cancelled') ? 'table-danger':(order.orderStatus == 'Delivered') ? 'table-success' : (order.orderStatus == 'Confirmed') ? 'table-warning' : ''}">
+
+											<td th:text="${srno.index+1}">1</td>
+											<td th:text="${order.merchant.name}">Merchant Name</td>
+											<td th:text="${order.productName}">Rice</td>
+											<td th:text="${order.quantity}">100</td>
+											<td th:text="'₹ '+${order.pricePerUnit}">50</td>
+											<td th:text="'₹ '+ ${order.quantity * order.pricePerUnit}">5000</td>
+											<td>
+												<span class="badge text-white" th:classappend="${order.orderStatus == 'Pending'} ? 'bg-warning' : (${order.orderStatus == 'Confirmed'} ? 'bg-primary' :(${order.orderStatus == 'Delivered'} ? 'bg-success' : 'bg-danger'))" th:text="${order.orderStatus}"> 
+												</span>
+											</td>
+											<td th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"></td>
+											<td th:text="${order.deliveredDate != null ? #temporals.format(order.deliveredDate, 'dd-MM-yyyy HH:mm') : 'No Records'}"></td>
+											
+											<td>
+												<a th:href="@{ViewPaymentSlip(id = ${order.orderId})}">View Pay Slip</a>
+											</td>
+											
+											
+											<td class="p-0 m-0">
+												<form th:action="@{updateOrderStatus}" style="height: 31px;" method="post" class="m-0 p-0 d-flex justify-content-center">
+
+													<input type="hidden" name="orderId" th:value="${order.orderId}" /> 
+													<select name="newStatus" class="form-control w-auto p-0" style="height: 30px; min-width: 100px;">
+														<option value="">Update Order Status</option>
+														<option value="Delivered">Delivered</option>
+														<option value="Cancelled">Cancelled</option>
+													</select>
+													<button type="submit" class="btn btn-sm btn-success">Update</button>
+												</form>
+											</td>
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		 				
+		<input type="hidden" id="msg" th:if="${msg}" th:value="${msg}">
+			
+		<script type="text/javascript">
+			var msg = document.getElementById("msg");
+			if(msg.value!="")
+			{
+				alert(msg.value);	
+			}
+		</script>
+		
+		<script th:if="${success}">
+    		Swal.fire({
+        		title: 'Order Status Updated!',
+        		text: 'Product Order Status Successfully Updated.',
+        		icon: 'success',
+        		confirmButtonText: 'OK'
+    		});
+		</script>
+		
+		<script th:if="${warning}">
+    		Swal.fire({
+        		title: 'Order Delivered!',
+        		text: 'Product has been already Delivered, So you can Update Status',
+        		icon: 'warning',
+        		confirmButtonText: 'OK'
+    		});
+		</script>
+		
+		<script th:if="${Cancelled}">
+			Swal.fire({
+			  icon: "error",
+			  title: "Oops...",
+			  text: "Order Already Cancelled!"
+			});
+		</script>
+		
+	</section>
+</body>
+</html>

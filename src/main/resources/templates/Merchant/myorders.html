@@ -1,0 +1,99 @@
+<html th:replace="~{Merchant/merchantbase::layout(~{::section})}">
+<body>
+	<section>
+		<div class="row">
+			<div class="container p-0">
+				<div class="row">
+					<div class="card w-100">
+					<div class="card-header">
+						<div class="row">
+							<div class="col-md-8">
+								<div class="card-title">My Orders</div>
+							</div>
+							<div class="col-md-4">
+								<!-- Filter Dropdown -->
+								<select class="form-control" id="statusFilter">
+									<option value="">All Orders</option>
+									<option value="Confirmed">Confirmed</option>
+									<option value="Delivered">Delivered</option>
+									<option value="Cancelled">Cancelled</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="card-body">
+						<!-- Orders Table -->
+				
+						<div class="table-responsive">
+							<table class="table table-bordered align-middle" id="example">
+							  <thead>
+								<tr>
+								<th>ID</th>
+								<th>Farmer</th>
+								<th>Product</th>
+								<th>Qty</th>
+								<th>Price/Unit</th>
+								<th>Total Price</th>
+								<th>Status</th>
+								<th>Order Date</th>
+								<th>Delivery Date</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="order, srno : ${orderList}" th:data-status="${order.orderStatus}">
+								<td th:text="${srno.index+1}">1</td>
+								<td th:text="${order.farmer.name}">Farmer Name</td>
+								<td th:text="${order.productName}">Wheat</td>
+								<td th:text="${order.quantity}">50</td>
+								<td th:text="${order.pricePerUnit}">100.00</td>
+								<td th:text="${order.quantity * order.pricePerUnit}">5000</td>
+								<td class="text-center">
+									<span class="badge text-white" th:classappend="${order.orderStatus == 'Pending'} ? 'bg-warning' : (${order.orderStatus == 'Confirmed'} ? 'bg-primary' : (${order.orderStatus == 'Delivered'} ? 'bg-success' : 'bg-danger'))" th:text="${order.orderStatus}"> </span>
+								</td>
+								<td th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"></td>
+								<td th:text="${order.deliveredDate != null ? #temporals.format(order.deliveredDate, 'dd-MM-yyyy HH:mm') : 'No Records'}"></td>
+								<td class="text-center">
+    								<!-- Show Cancel button only if orderStatus is Confirmed -->
+    								<a th:if="${order.orderStatus == 'Confirmed'}" th:href="@{CancelOrder(id=${order.orderId})}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure want to cancel?')">
+        								Cancel Order
+    								</a>
+
+    								<!-- Show ❌ if orderStatus is Cancelled -->
+    								<span th:if="${order.orderStatus == 'Cancelled'}" style="font-size: 1.2rem;">❌</span>
+
+    								<!-- Show ✅ if orderStatus is Delivered -->
+    								<span th:if="${order.orderStatus == 'Delivered'}" style="font-size: 1.2rem;">✅</span>
+								</td>
+											
+							</tr>
+						</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+					
+				</div>
+				
+			</div>
+
+		</div>
+		
+<!-- Filter Script -->
+<script>
+    const filter = document.getElementById("statusFilter");
+    const rows = document.querySelectorAll("#example tbody tr");
+
+    filter.addEventListener("change", function() {
+        const selected = this.value;
+        rows.forEach(row => {
+            const status = row.getAttribute("data-status");
+            row.style.display = (!selected || status === selected) ? "" : "none";
+        });
+    });
+</script>
+		
+	</section>
+</body>
+</html>

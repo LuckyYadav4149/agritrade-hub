@@ -1,0 +1,102 @@
+<html th:replace="~{admin/adminbase::layout(~{::section})}">
+<head></head>
+
+<body>
+	<section>
+		<div class="row">
+			<div class="container">
+				<div class="row">
+					<div class="card w-100">
+						<div class="card-header">
+							<div class="row">
+								<div class="col-md-8">
+									<div class="card-title">Orders Recieved</div>
+								</div>
+								
+								<div class="col-md-4">
+									<!-- Filter Dropdown -->
+									<select class="form-control" id="statusFilter">
+										<option value="">All Orders</option>
+										<option value="Pending">Pending</option>
+										<option value="Confirmed">Confirmed</option>
+										<option value="Delivered">Delivered</option>
+										<option value="Cancelled">Cancelled</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="card-body">
+							<!-- Orders Table -->
+							<div class="table-responsive">
+								<table class="table table-bordered table-hover text-center" id="example">
+									<thead class="table-success">
+										<tr>
+											<th>Sr. No.</th>
+											<th>Merchant</th>
+											<th>Former</th>
+											<th>Product</th>
+											<th>Qty</th>
+											<th>Price/Unit</th>
+											<th>Total</th>
+											<th>Status</th>
+											<th>Order Date</th>
+											<th>Delivery Date</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="order,srno : ${orderList}" class=""
+											th:data-status="${order.orderStatus}"
+											th:classappend="${(order.orderStatus == 'Cancelled') ? 'table-danger':(order.orderStatus == 'Delivered') ? 'table-success' : (order.orderStatus == 'Confirmed') ? 'table-warning' : ''}">
+
+
+											<td th:text="${srno.index+1}">1</td>
+											<td th:text="${order.merchant.name}">Merchant Name</td>
+											<td th:text="${order.farmer.name}">Former Name</td>
+											
+											<td th:text="${order.productName}">Rice</td>
+											<td th:text="${order.quantity}">100</td>
+											<td th:text="${order.pricePerUnit}">50</td>
+											<td th:text="${order.quantity * order.pricePerUnit}">5000</td>
+											<td><span class="badge"
+												th:classappend="${order.orderStatus == 'Pending'} ? 'bg-warning' : (${order.orderStatus == 'Confirmed'} ? 'bg-primary' :(${order.orderStatus == 'Delivered'} ? 'bg-success' : 'bg-danger'))"
+												th:text="${order.orderStatus}"> </span></td>
+											<td th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"></td>
+											<td th:text="${order.deliveredDate != null ? #temporals.format(order.deliveredDate, 'dd-MM-yyyy HH:mm') : 'No Records'}"></td>
+											
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- Filter Script -->
+			<script>
+    const filter = document.getElementById("statusFilter");
+    const rows = document.querySelectorAll("#ordersTable tbody tr");
+
+    filter.addEventListener("change", function () {
+        const selected = this.value;
+        rows.forEach(row => {
+            const status = row.getAttribute("data-status");
+            row.style.display = (!selected || status === selected) ? "" : "none";
+        });
+    });
+</script>
+		</div>
+		
+		<script th:if="${success}">
+    		Swal.fire({
+        		title: 'Order Status Updated!',
+        		text: 'Product Order Status Successfully Updated.',
+        		icon: 'success',
+        		confirmButtonText: 'OK'
+    		});
+		</script>
+	</section>
+</body>
+</html>

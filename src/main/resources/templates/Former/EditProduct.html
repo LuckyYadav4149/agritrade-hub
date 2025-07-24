@@ -1,0 +1,68 @@
+<html th:replace="~{Former/formerbase::layout(~{::section})}">
+<body>
+	<section>
+		<div class="row">
+			<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+        	 <!-- Optional: Success/Error message -->
+            <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+            <div th:if="${success}" class="alert alert-success mt-3" th:text="${success}"></div>
+        
+        
+            <div class="mt-2 card shadow-lg rounded">
+                <div class="card-header bg-success text-white text-center">
+                    <h5>Update Product Quantity and Price Per Unit</h5>
+                </div>
+                <div class="card-body px-4">
+                    <form th:action="@{EditProduct}" method="post" th:object="${product}" enctype="multipart/form-data">
+                    	<div class="mb-3 text-center">
+                    		<img alt="image not found" th:if="${product.image}" th:src="@{'/ProductImage/'+${product.image}}" class="pb-4" height="250px" width="300px">
+                            <h5 class="form-label">Product Name :  <span class="text-primary" th:text="${product.productName}"></span></h5>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="Stock" class="form-label">Enter Updated Product Name</label>
+                            <input type="text" class="form-control" th:field="*{productName}" placeholder="Enter updated Quantity..." required />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Category</label>
+                            <select th:field="*{category}" class="form-control" required="required">
+                            	<option value="" selected>--Select Category--</option>
+        						<option th:each="cat : ${categories}" th:value="${cat.category}" th:text="${cat.category}"></option>
+                            </select>
+                        </div>
+                        
+                        
+                        <div class="mb-3">
+                            <label for="Stock" class="form-label">Enter Updated Quantity</label>
+                            <input type="number" class="form-control" id="UpdatedQuantity" th:field="*{quantity}" placeholder="Enter updated Quantity..." required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="PricePerUnit" class="form-label">Enter Price/Unit</label>
+                            <input type="number" class="form-control" id="Updated Price" th:field="*{pricePerUnit}" placeholder="Price Per Unit..." required />
+                            <input type="hidden" th:field="${product.id}" >
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Add New Product Image</label>
+                            <input type="file" class="form-control" name="file">
+                        </div>
+						
+                        <div class="d-grid text-center">
+                            <button type="submit" class="btn btn-success">Update Product</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+         </div>
+    </div>
+</div>
+			
+		</div>
+	</section>
+</body>
+</html>

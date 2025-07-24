@@ -1,0 +1,75 @@
+<html th:replace="~{Former/formerbase::layout(~{::section})}">
+<body>
+<section>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+
+                <!-- Card -->
+                <div class="card shadow-lg rounded-4 border-0">
+                    <div class="card-header bg-primary text-white rounded-top-4">
+                        <h4 class="mb-0 text-center">Edit Profile</h4>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <!-- Flash message -->
+                        <div th:if="${msg}" class="alert alert-warning" th:text="${msg}"></div>
+
+                        <form th:action="@{UpdateProfile}" th:object="${former}" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <!-- Profile Picture Section -->
+                                <div class="col-md-4 text-center mb-3">
+                                    <img th:src="@{${former.profilepic != null} ? '/ProfilePic/' + ${former.profilepic} : '/img/user_img.jpg'}"
+                                         class="img-thumbnail rounded-circle border border-2"
+                                         alt="Profile Picture"
+                                         width="200" height="200"/>
+                                    <div class="mt-3">
+                                        <input type="file" name="file" class="form-control"/>
+                                    </div>
+                                </div>
+
+                                <!-- Form Fields -->
+                                <div class="col-md-8">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Name</label>
+                                        <input type="text" class="form-control" name="name" th:value="${former.name}" required/>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Email</label>
+                                        <input type="email" class="form-control" th:value="${former.email}" readonly/>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Contact No</label>
+                                        <input type="text" class="form-control" name="contactno" th:value="${former.contactno}" required/>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Aadhar No</label>
+                                        <input type="text" class="form-control" name="aadharno" th:value="${former.aadharno}" required/>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Address</label>
+                                        <textarea class="form-control" name="address" rows="3" required
+                                                  th:text="${former.address}"></textarea>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-success px-4">
+                                            Update Profile
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div> <!-- card-body -->
+                </div> <!-- card -->
+
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

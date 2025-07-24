@@ -1,0 +1,77 @@
+<html th:replace="~{Merchant/merchantbase::layout(~{::section})}">
+
+<head></head>
+
+<body>
+	<section>
+		<div class="container-flui" style="margin-top: -30px; margin-bottom: -30px;">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 bg-white border-end p-3">
+            <h5 class="mb-3">📂 Categories</h5>
+            <ul class="list-group">
+                <li class="list-group-item"
+                    th:classappend="${selectedCategory == null} ? 'active' : ''">
+                    <a th:href="@{Dashboard}" class="text-decoration-none d-block" th:classappend="${selectedCategory == null} ? 'text-white' : ''">All</a>
+                </li>
+                <li th:each="cat : ${categories}" class="list-group-item" th:classappend="${selectedCategory == cat.category} ? 'active' : ''">
+                    <a th:href="@{Dashboard(category=${cat.category})}" class="text-decoration-none d-block" th:classappend="${selectedCategory == cat.category} ? 'text-white' : ''" th:text="${cat.category}">Category</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Product List -->
+        <div class="col-md-10 p-4 pt-0" id="showProduct">
+            <h4 th:if="${selectedCategory != null}" th:text="'Products in ' + ${selectedCategory}">Category Products</h4>
+            <h4 th:if="${selectedCategory == null}">All Products</h4>
+
+            <div class="row g-4 mt-3">
+                <div class="col-md-3" th:each="product : ${products}">
+                    <div class="card shadow-sm">
+                        <img th:src="@{'/ProductImage/' + ${product.image}}" class="card-img-top p-2 pb-0" style="height: 180px; object-fit: cover;">
+                        <div class="card-body py-1 h-100">
+                            <h4 class="card-title mt-1" th:text="${product.productName}">Product Name</h4>
+                    		<hr class="mt-0">
+                    		<p class="card-text"><strong>Seller:</strong> <span th:text="${product.farmer.name}">Farmer Name</span></p>
+                    		<p class="card-text"><strong>Quantity:</strong> <span th:text="${product.quantity}">0</span> kg Available</p>
+                    		<p class="card-text"><strong>Price/Unit:</strong> ₹<span th:text="${product.pricePerUnit}">0</span></p>
+                    		
+                    		<div class="card-footer text-center">
+                    			<a th:href="@{BuyProduct(id = ${product.id})}" class="btn btn-sm btn-success">Buy Now</a>                    	
+                    		</div>
+                    		<!-- <form th:action="@{OrderNow}" method="post" class="d-flex">
+                        		<input type="hidden" name="productId" th:value="${product.id}" />
+                        		<input type="number" name="buyQuantity" placeholder="Enter Quantity" class="form-control w-50 mx-auto" min="1" max="999" required />
+                        		<button type="submit" class="btn btn-success mx-auto">Buy Now</button>
+                    		</form> -->
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${products.size()} == 0" class="text-muted mt-4">
+                    <p>No products available in this category.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+		
+		
+		<style>
+			#showProduct {
+    			overflow: auto;
+    			height: 80vh;
+
+    			/* Hide scrollbar for WebKit-based browsers */
+    			scrollbar-width: none;          /* Firefox */
+    			-ms-overflow-style: none;       /* Internet Explorer 10+ */
+			}
+
+			#showProduct::-webkit-scrollbar {
+    			display: none;        /* Safari and Chrome */
+			}
+			
+			
+		</style>
+	</section>
+</body>
+</html>

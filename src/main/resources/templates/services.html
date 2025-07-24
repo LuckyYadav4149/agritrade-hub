@@ -1,0 +1,106 @@
+<html th:replace="~{base::layout(~{::main})}">
+<head></head>
+<body>
+	<main class="main">
+		<style>
+			.service-card {
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: #198754;
+        }
+		</style>
+		<!-- Page Title -->
+		<div class="page-title dark-background pt-5 mt-5" data-aos="fade" style="background-image: url(img/page-title-bg.webp);">
+			<div class="container position-relative mt-5">
+				 <h1>Services</h1>
+				<!--<p>Home / Contact</p> -->
+				<nav class="breadcrumbs">
+					<ol>
+						<li><a href="/" class="fw-bold">Home</a></li>
+						<li class="current">Services</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
+		<!-- End Page Title -->
+		<section>
+				<!-- Services Content -->
+<div class="container my-5">
+    <div class="row text-center mb-4">
+        <div class="col">
+            <h2 class="fw-bold text-success">What We Offer</h2>
+            <p class="text-muted">Explore the key features and services of AgriTrade Hub</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Service 1 -->
+        <div class="col-md-4">
+            <div class="card service-card p-4 h-100 text-center">
+                <div class="service-icon mb-3">🌾</div>
+                <h5>Direct Farmer to Merchant Trading</h5>
+                <p class="text-muted">Eliminate middlemen and promote fair pricing by connecting farmers directly with verified merchants.</p>
+            </div>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="col-md-4">
+            <div class="card service-card p-4 h-100 text-center">
+                <div class="service-icon mb-3">📦</div>
+                <h5>Live Product Listings</h5>
+                <p class="text-muted">Farmers can list their available products in real-time, while merchants can browse and place orders anytime.</p>
+            </div>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="col-md-4">
+            <div class="card service-card p-4 text-center">
+                <div class="service-icon mb-3">🛒</div>
+                <h5>Easy Order Management</h5>
+                <p class="text-muted">Track, manage and update order status with an intuitive dashboard designed for both farmers and merchants.</p>
+            </div>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="col-md-4">
+            <div class="card service-card p-4 h-100 text-center">
+                <div class="service-icon mb-3">📁</div>
+                <h5>Category-wise Product Filtering</h5>
+                <p class="text-muted">Merchants can explore products based on dynamic categories to find exactly what they need quickly.</p>
+            </div>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="col-md-4">
+            <div class="card service-card p-4 h-100 text-center">
+                <div class="service-icon mb-3">🔒</div>
+                <h5>Secure Login & Profiles</h5>
+                <p class="text-muted">Each user gets a secure login and personalized profile for viewing transactions, history, and product updates.</p>
+            </div>
+        </div>
+
+        <!-- Service 6 -->
+        <div class="col-md-4">
+            <div class="card service-card p-4 h-100 text-center">
+                <div class="service-icon mb-3">📈</div>
+                <h5>Reports & Dashboards</h5>
+                <p class="text-muted">Insightful dashboards for users to view their orders, revenue, and activity — updated in real-time.</p>
+            </div>
+        </div>
+    </div>
+</div>
+						
+		</section>
+	</main>
+
+</body>
+</html>
